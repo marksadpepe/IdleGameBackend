@@ -2,12 +2,12 @@ import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ConfigModule } from "@nestjs/config";
-import { serverConfig } from "../configs";
+import { serverConfig, databaseConfig } from "../configs";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [serverConfig],
+      load: [databaseConfig, serverConfig],
       isGlobal: true,
     }),
   ],
