@@ -17,6 +17,9 @@ export class UserEntity {
   @Column()
   level: number;
 
+  @Column({ type: "timestamp", default: "CURRENT_TIMESTAMP" })
+  created_at: Date;
+
   @Column({ type: "timestamp", nullable: true })
   last_seen_time: Date;
 }
