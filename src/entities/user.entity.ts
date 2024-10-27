@@ -11,15 +11,15 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: 0 })
   xp: number;
 
-  @Column()
+  @Column({ default: 1 })
   level: number;
 
   @Column({ type: "timestamp", default: "CURRENT_TIMESTAMP" })
   created_at: Date;
 
-  @Column({ type: "timestamp", nullable: true })
+  @Column({ type: "timestamp", default: "CURRENT_TIMESTAMP" })
   last_seen_time: Date;
 }
