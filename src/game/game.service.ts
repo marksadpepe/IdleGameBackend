@@ -15,9 +15,11 @@ export class GameService {
     this.xpPerMinute = gameConfig.xpPerMinute;
   }
 
-  calculateAccumulatedXp(userLastSeenTime: number): number {
+  calculateAccumulatedXp(userLastSeenTime: Date): number {
     const currentTime = new Date().getTime();
-    const timeDiff = Math.floor((currentTime - userLastSeenTime) / 1000 / 60);
+    const timeDiff = Math.floor(
+      (currentTime - userLastSeenTime.getTime()) / 1000 / 60,
+    );
 
     return timeDiff * this.xpPerMinute;
   }

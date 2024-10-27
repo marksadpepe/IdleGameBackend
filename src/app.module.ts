@@ -16,6 +16,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { TelegramMiddleware } from "./middlewares/telegram/telegram.middleware";
 import { TokenModule } from "./token/token.module";
 import { GameModule } from "./game/game.module";
+import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { GameModule } from "./game/game.module";
     }),
     TokenModule,
     GameModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
