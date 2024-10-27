@@ -10,6 +10,10 @@ import telegramConfig, {
   TELEGRAM_CONFIGURATION_KEY,
   TelegramConfigType,
 } from "./telegram.configuration";
+import jwtConfig, {
+  JWT_CONFIGURATION_KEY,
+  JwtConfigType,
+} from "./jwt.configuration";
 
 export {
   serverConfig,
@@ -21,4 +25,7 @@ export {
   telegramConfig,
   TELEGRAM_CONFIGURATION_KEY,
   TelegramConfigType,
+  jwtConfig,
+  JWT_CONFIGURATION_KEY,
+  JwtConfigType,
 };

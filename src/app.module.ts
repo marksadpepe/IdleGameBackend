@@ -9,14 +9,16 @@ import {
   DBConfigType,
   DB_CONFIGURATION_KEY,
   telegramConfig,
+  jwtConfig,
 } from "../configs";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { TelegramMiddleware } from "./middlewares/telegram/telegram.middleware";
+import { TokenModule } from "./token/token.module";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [databaseConfig, serverConfig, telegramConfig],
+      load: [databaseConfig, serverConfig, telegramConfig, jwtConfig],
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
@@ -27,6 +29,7 @@ import { TelegramMiddleware } from "./middlewares/telegram/telegram.middleware";
         ),
       inject: [ConfigService],
     }),
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
