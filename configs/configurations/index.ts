@@ -14,6 +14,10 @@ import jwtConfig, {
   JWT_CONFIGURATION_KEY,
   JwtConfigType,
 } from "./jwt.configuration";
+import gameConfig, {
+  GAME_CONFIGURATION_KEY,
+  GameConfigType,
+} from "./game.configuration";
 
 export {
   serverConfig,
@@ -28,4 +32,7 @@ export {
   jwtConfig,
   JWT_CONFIGURATION_KEY,
   JwtConfigType,
+  gameConfig,
+  GAME_CONFIGURATION_KEY,
+  GameConfigType,
 };
