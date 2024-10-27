@@ -1,22 +1,22 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity("users")
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
-  @Column({unique: true})
-  username: string
-
-  @Column()
-  password: string
+  @Column({ unique: true })
+  username: string;
 
   @Column()
-  xp: number
+  password: string;
 
   @Column()
-  level: number
+  xp: number;
 
-  @Column({type: "timestamp", nullable: true})
-  last_seen_time: Date
+  @Column()
+  level: number;
+
+  @Column({ type: "timestamp", nullable: true })
+  last_seen_time: Date;
 }
