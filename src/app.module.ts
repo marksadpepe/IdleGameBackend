@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
@@ -8,13 +8,15 @@ import {
   getTypeormOptions,
   DBConfigType,
   DB_CONFIGURATION_KEY,
+  telegramConfig,
 } from "../configs";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { TelegramMiddleware } from "./middlewares/telegram/telegram.middleware";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [databaseConfig, serverConfig],
+      load: [databaseConfig, serverConfig, telegramConfig],
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
@@ -29,4 +31,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(TelegramMiddleware).forRoutes("*");
+  }
+}

@@ -6,6 +6,10 @@ import databaseConfig, {
   DBConfigType,
   DB_CONFIGURATION_KEY,
 } from "./database.configuration";
+import telegramConfig, {
+  TELEGRAM_CONFIGURATION_KEY,
+  TelegramConfigType,
+} from "./telegram.configuration";
 
 export {
   serverConfig,
@@ -14,4 +18,7 @@ export {
   databaseConfig,
   DBConfigType,
   DB_CONFIGURATION_KEY,
+  telegramConfig,
+  TELEGRAM_CONFIGURATION_KEY,
+  TelegramConfigType,
 };
