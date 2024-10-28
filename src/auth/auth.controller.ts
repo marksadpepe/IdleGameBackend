@@ -16,7 +16,16 @@ import { ConfigService } from "@nestjs/config";
 import { JWT_CONFIGURATION_KEY, JwtConfigType } from "../../configs";
 import { AuthGuard } from "./auth.guard";
 import { AllExceptionsFilter } from "../exceptions/AllExceptionsFilter";
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from "@nestjs/swagger";
+import { ApiTelegramAuth } from "../common/decorators";
 
+@ApiTags("")
+@ApiTelegramAuth()
 @UseFilters(AllExceptionsFilter)
 @Controller("")
 export class AuthController {
@@ -36,6 +45,23 @@ export class AuthController {
   }
 
   @UsePipes(new ValidationPipe())
+  @ApiOperation({ summary: "Register a new user" })
+  @ApiResponse({
+    status: 201,
+    description: "User has been succsessfully registered",
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad Request",
+  })
+  @ApiResponse({
+    status: 409,
+    description: "Conflict",
+  })
+  @ApiResponse({
+    status: 500,
+    description: "Internal Server Error",
+  })
   @Post("start")
   async start(@Body() dto: EnterDto, @Res() res: Response) {
     const { username, password } = dto;
@@ -50,6 +76,23 @@ export class AuthController {
   }
 
   @UsePipes(new ValidationPipe())
+  @ApiOperation({ summary: "User login" })
+  @ApiResponse({
+    status: 200,
+    description: "User has been succsessfully logged in",
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Bad Request",
+  })
+  @ApiResponse({
+    status: 404,
+    description: "User Not Found",
+  })
+  @ApiResponse({
+    status: 500,
+    description: "Internal Server Error",
+  })
   @Post("enter")
   async enter(@Body() dto: EnterDto, @Res() res: Response) {
     const { username, password } = dto;
@@ -64,6 +107,20 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @ApiOperation({ summary: "User logout" })
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: "User has been succsessfully logged out",
+  })
+  @ApiResponse({
+    status: 401,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: 500,
+    description: "Internal Server Error",
+  })
   @Post("exit")
   async exit(@Req() req: Request, @Res() res: Response) {
     const token = this.authService.getTokenFromHeaders(req.headers.cookie);
@@ -74,6 +131,20 @@ export class AuthController {
     return res.status(200).json({});
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Update refresh token" })
+  @ApiResponse({
+    status: 200,
+    description: "Token has been succsessfully refreshed",
+  })
+  @ApiResponse({
+    status: 401,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: 500,
+    description: "Internal Server Error",
+  })
   @Post("refresh-token")
   async refresh(@Req() req: Request, @Res() res: Response) {
     const token = this.authService.getTokenFromHeaders(req.headers.cookie);
