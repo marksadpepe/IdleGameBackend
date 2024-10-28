@@ -5,7 +5,6 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { UserDto } from "./dto";
 import { UserEntity } from "../entities/user.entity";
 import { GameService } from "../game/game.service";
 
@@ -76,7 +75,7 @@ export class UserService {
     }
   }
 
-  async updateXp(userId: number): Promise<UserDto> {
+  async updateXp(userId: number): Promise<UserEntity> {
     const user = await this.userRep.findOneBy({ id: userId });
     if (!user) {
       throw new NotFoundException("User not found");
@@ -97,7 +96,7 @@ export class UserService {
     user.last_seen_time = new Date();
     await this.userRep.save(user);
 
-    return new UserDto(user);
+    return user;
   }
 
   // TODO: method to retrieve all users
