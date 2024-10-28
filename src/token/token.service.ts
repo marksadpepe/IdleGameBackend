@@ -68,8 +68,8 @@ export class TokenService {
     return new TokenDto(tokenData);
   }
 
-  async removeToken(refreshToken: string): Promise<void> {
-    await this.tokenRep.delete({ refresh_token: refreshToken });
+  async removeToken(user: UserEntity): Promise<void> {
+    await this.tokenRep.delete({ user });
   }
 
   validateAccessToken(accessToken: string): JwtValidated {

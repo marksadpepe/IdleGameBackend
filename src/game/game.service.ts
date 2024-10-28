@@ -4,7 +4,9 @@ import { GameConfigType, GAME_CONFIGURATION_KEY } from "../../configs";
 
 @Injectable()
 export class GameService {
-  private readonly xpPerMinute: number;
+  public readonly xpPerMinute: number;
+  public readonly levelThreshold: number;
+  public readonly levelIncValue: number;
 
   constructor(private readonly configService: ConfigService) {
     const gameConfig = this.configService.get<GameConfigType>(
@@ -13,6 +15,8 @@ export class GameService {
     );
 
     this.xpPerMinute = gameConfig.xpPerMinute;
+    this.levelThreshold = gameConfig.levelThreshold;
+    this.levelIncValue = gameConfig.levelThresholdIncreaseBy;
   }
 
   calculateAccumulatedXp(userLastSeenTime: Date): number {

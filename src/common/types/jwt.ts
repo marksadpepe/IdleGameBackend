@@ -4,9 +4,9 @@ export type JwtTokens = {
 };
 
 export type JwtPayload = {
-  user_id: number;
-  user_xp: number;
-  user_level: number;
+  userId: number;
+  userXp: number;
+  userLevel: number;
 };
 
 export type JwtValidated = JwtPayload & {

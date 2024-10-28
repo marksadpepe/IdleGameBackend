@@ -1,6 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-import { ConfigService } from "@nestjs/config";
-import { GAME_CONFIGURATION_KEY, GameConfigType } from "../../configs";
 
 @Entity("users")
 export class UserEntity {
@@ -28,13 +26,9 @@ export class UserEntity {
   private levelThreshold: number;
   private increaseLevelThresholdBy: number;
 
-  constructor(private readonly configService: ConfigService) {
-    const gameConfig = this.configService.get<GameConfigType>(
-      GAME_CONFIGURATION_KEY,
-      { infer: true },
-    );
-    this.levelThreshold = gameConfig.levelThreshold;
-    this.increaseLevelThresholdBy = gameConfig.levelThresholdIncreaseBy;
+  initLevelConfig(levelThreshold: number, increaseLevelThresholdBy: number) {
+    this.levelThreshold = levelThreshold;
+    this.increaseLevelThresholdBy = increaseLevelThresholdBy;
   }
 
   // NOTE: start from here and move the logic below to another module
