@@ -34,7 +34,7 @@ This is a fake Telegram authorization, and its value is ```fake_token```.
 # Running
 ```bash
 npm i
-bash ./run_backend.sh
+npm run app
 ```
 
 The Swagger is at ```http://localhost:your_server_port/api```.
