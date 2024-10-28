@@ -5,7 +5,7 @@ import { GameConfigType, GAME_CONFIGURATION_KEY } from "../../configs";
 @Injectable()
 export class GameService {
   public readonly xpPerMinute: number;
-  public readonly levelThreshold: number;
+  public levelThreshold: number;
   public readonly levelIncValue: number;
 
   constructor(private readonly configService: ConfigService) {
