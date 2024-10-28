@@ -54,9 +54,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const user = await this.userService.getUserById(userData.userId);
-
-    await this.tokenService.removeToken(user);
+    await this.tokenService.removeToken(refreshToken);
     await this.userService.updateLastSeenTime(userData.userId);
 
     return {};

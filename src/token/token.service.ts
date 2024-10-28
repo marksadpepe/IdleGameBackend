@@ -39,9 +39,7 @@ export class TokenService {
   }
 
   async saveToken(user: UserEntity, refreshToken: string): Promise<TokenDto> {
-    const tokenData = await this.tokenRep.findOneBy({
-      refresh_token: refreshToken,
-    });
+    const tokenData = await this.tokenRep.findOneBy({user});
     if (tokenData) {
       tokenData.refresh_token = refreshToken;
       await this.tokenRep.save(tokenData);
@@ -68,8 +66,8 @@ export class TokenService {
     return new TokenDto(tokenData);
   }
 
-  async removeToken(user: UserEntity): Promise<void> {
-    await this.tokenRep.delete({ user });
+  async removeToken(refreshToken: string): Promise<void> {
+    await this.tokenRep.delete({ refresh_token: refreshToken });
   }
 
   validateAccessToken(accessToken: string): JwtValidated {
