@@ -15,7 +15,7 @@ export class TelegramMiddleware implements NestMiddleware {
       TELEGRAM_CONFIGURATION_KEY,
       { infer: true },
     );
-    const reqTgToken = req.headers.authorization;
+    const reqTgToken = req.headers["x-telegram"];
 
     if (token !== reqTgToken) {
       return res.status(401).json({ error: "Unauthorized" });

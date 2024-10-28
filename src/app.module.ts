@@ -17,6 +17,7 @@ import { TelegramMiddleware } from "./middlewares/telegram/telegram.middleware";
 import { TokenModule } from "./token/token.module";
 import { GameModule } from "./game/game.module";
 import { UserModule } from "./user/user.module";
+import { AuthModule } from "./auth/auth.module";
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UserModule } from "./user/user.module";
     TokenModule,
     GameModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

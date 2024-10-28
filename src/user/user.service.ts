@@ -5,10 +5,8 @@ import {
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { UserDto } from "./dto";
 import { UserEntity } from "../entities/user.entity";
-import { TokenService } from "../token/token.service";
-import { UserTokenDto, UserDto } from "./dto";
-import { ConfigService } from "@nestjs/config";
 import { GameService } from "../game/game.service";
 
 @Injectable()
@@ -16,39 +14,54 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRep: Repository<UserEntity>,
-    private readonly tokenService: TokenService,
-    private readonly configService: ConfigService,
     private readonly gameService: GameService,
   ) {}
 
-  async createUser(username: string, password: string): Promise<UserTokenDto> {
+  async createUser(username: string, password: string): Promise<UserEntity> {
     const candidate = await this.userRep.findOneBy({ username });
     if (candidate) {
       throw new ConflictException("User with such username already exists");
     }
 
-    const user = new UserEntity(this.configService);
+    const user = new UserEntity();
     user.username = username;
     user.password = password;
+    user.initLevelConfig(
+      this.gameService.levelThreshold,
+      this.gameService.levelIncValue,
+    );
+
     await this.userRep.save(user);
 
-    const tokens = this.tokenService.generateTokens({
-      user_id: user.id,
-      user_xp: user.xp,
-      user_level: user.level,
-    });
-    await this.tokenService.saveToken(user, tokens.refreshToken);
-
-    return new UserTokenDto(user, tokens);
+    return user;
   }
 
-  async getUser(userId: number): Promise<UserDto> {
+  async getUserById(userId: number): Promise<UserEntity> {
     const user = await this.userRep.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    return user;
+  }
+
+  async getUserByUsername(username: string): Promise<UserEntity> {
+    const user = await this.userRep.findOneBy({ username });
     if (!user) {
       throw new NotFoundException("User with such username does not exists");
     }
 
-    return new UserDto(user);
+    return user;
+  }
+
+  async updateLastSeenTime(userId: number): Promise<void> {
+    const user = await this.userRep.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    user.last_seen_time = new Date();
+    await this.userRep.save(user);
   }
 
   async updateXpForAllUsers(xp: number): Promise<void> {
