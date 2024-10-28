@@ -72,7 +72,7 @@ export class AuthService {
     }
 
     const user = await this.userService.getUserById(userData.userId);
-    await this.tokenService.removeToken(user);
+    await this.tokenService.removeToken(refreshToken);
 
     const tokens = this.tokenService.generateTokens({
       userId: user.id,

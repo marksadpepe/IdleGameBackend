@@ -1,6 +1,7 @@
 import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { ScheduleModule } from "@nestjs/schedule";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import {
   serverConfig,
@@ -18,6 +19,7 @@ import { TokenModule } from "./token/token.module";
 import { GameModule } from "./game/game.module";
 import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
+import { XpschedulerModule } from "./xpscheduler/xpscheduler.module";
 
 @Module({
   imports: [
@@ -31,6 +33,7 @@ import { AuthModule } from "./auth/auth.module";
       ],
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService) =>
@@ -43,6 +46,7 @@ import { AuthModule } from "./auth/auth.module";
     GameModule,
     UserModule,
     AuthModule,
+    XpschedulerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -39,7 +39,7 @@ export class TokenService {
   }
 
   async saveToken(user: UserEntity, refreshToken: string): Promise<TokenDto> {
-    const tokenData = await this.tokenRep.findOneBy({user});
+    const tokenData = await this.tokenRep.findOneBy({ user });
     if (tokenData) {
       tokenData.refresh_token = refreshToken;
       await this.tokenRep.save(tokenData);

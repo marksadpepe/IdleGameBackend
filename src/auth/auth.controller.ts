@@ -15,7 +15,7 @@ import { Request, Response } from "express";
 import { ConfigService } from "@nestjs/config";
 import { JWT_CONFIGURATION_KEY, JwtConfigType } from "../../configs";
 import { AuthGuard } from "./auth.guard";
-import {AllExceptionsFilter} from "../exceptions/AllExceptionsFilter";
+import { AllExceptionsFilter } from "../exceptions/AllExceptionsFilter";
 
 @UseFilters(AllExceptionsFilter)
 @Controller("")

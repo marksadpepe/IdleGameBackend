@@ -26,11 +26,6 @@ export class UserService {
     const user = new UserEntity();
     user.username = username;
     user.password = password;
-    user.initLevelConfig(
-      this.gameService.levelThreshold,
-      this.gameService.levelIncValue,
-    );
-
     await this.userRep.save(user);
 
     return user;
@@ -66,8 +61,17 @@ export class UserService {
 
   async updateXpForAllUsers(xp: number): Promise<void> {
     const users = await this.userRep.find();
+
     for (const user of users) {
-      user.addXp(xp);
+      const levelThreshold = user.addXp(
+        xp,
+        this.gameService.levelThreshold,
+        this.gameService.levelIncValue,
+      );
+      if (levelThreshold !== this.gameService.levelThreshold) {
+        this.gameService.levelThreshold = levelThreshold;
+      }
+
       await this.userRep.save(user);
     }
   }
@@ -81,9 +85,16 @@ export class UserService {
     const accumulatedXp = this.gameService.calculateAccumulatedXp(
       user.last_seen_time,
     );
-    user.addXp(accumulatedXp);
-    user.last_seen_time = new Date();
+    const levelThreshold = user.addXp(
+      accumulatedXp,
+      this.gameService.levelThreshold,
+      this.gameService.levelIncValue,
+    );
+    if (levelThreshold !== this.gameService.levelThreshold) {
+      this.gameService.levelThreshold = levelThreshold;
+    }
 
+    user.last_seen_time = new Date();
     await this.userRep.save(user);
 
     return new UserDto(user);
